@@ -1,0 +1,95 @@
+old + bug
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Card Game</title>
+    <style>
+      /* CSS styles */
+      body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+        background-color: #f0f0f0;
+      }
+
+      #root {
+        position: relative;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 20px;
+      }
+
+      .card {
+        width: 150px;
+        height: 200px;
+        border-radius: 50px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        border: 1px solid black;
+        padding: 10px;
+        background-color: white;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+
+    <script>
+      // JavaScript code
+      const cards = [
+        { chosen: true, content: "Hero Character", color: "lightblue" },
+        { chosen: false, content: "Villain", color: "lightgreen" },
+        { chosen: false, content: "Anti-Hero", color: "lightcoral" },
+      ];
+
+      function renderCards() {
+        const root = document.getElementById("root");
+        root.innerHTML = "";
+
+        cards.forEach((card, index) => {
+          const cardElement = document.createElement("div");
+          cardElement.classList.add("card");
+          cardElement.style.backgroundColor = card.color;
+          cardElement.addEventListener("click", () => handleClick(index));
+
+          const content = document.createElement("h3");
+          content.textContent = card.content;
+          cardElement.appendChild(content);
+
+          root.appendChild(cardElement);
+        });
+      }
+
+      function handleClick(index) {
+        cards.forEach((card, i) => {
+          if (i === index) {
+            card.chosen = true;
+          } else {
+            card.chosen = false;
+          }
+        });
+
+        const chosenCard = cards.find((card) => card.chosen);
+        if (chosenCard) {
+          const chosenIndex = cards.findIndex((card) => card.chosen);
+          const removedCard = cards.splice(chosenIndex, 1)[0];
+          cards.unshift(removedCard);
+        }
+
+        renderCards();
+      }
+
+      // Initial render
+      renderCards();
+    </script>
+  </body>
+</html>
